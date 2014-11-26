@@ -28,6 +28,14 @@
   <result column="MKNO" property="makerNo"/>
   <result column="MKNAME" property="maker"/>
  </resultMap>
+ 
+ <resultMap type="map" id="productListItem2Map">
+  <id column="PNO" property="no"/>
+  <result column="PNAME" property="name"/>
+  <result column="QTY" property="quantity"/>
+  <result column="MKNO" property="makerNo"/>
+  <result column="MKNAME" property="maker"/>
+ </resultMap>
 
 <sql id="productSelect">
 SELECT 
@@ -40,7 +48,7 @@ SELECT
 
   <select id="selectList" 
         parameterType="map" 
-        resultMap="productListItemMap">
+        resultMap="productListItem2Map">
 SELECT T1.PNO, T1.PNAME, T1.QTY, T2.MKNO, T2.MKNAME
 FROM PRODUCTS T1 LEFT OUTER JOIN MAKERS T2
 USING(MKNO)

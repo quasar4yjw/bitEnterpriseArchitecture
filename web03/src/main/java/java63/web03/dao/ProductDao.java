@@ -3,89 +3,25 @@
  */
 package java63.web03.dao;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java63.web03.domain.Product;
-
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-@Component("productDao")
-public class ProductDao {
-	@Autowired
-  SqlSessionFactory sqlSessionFactory;
-
-
-  public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-		this.sqlSessionFactory = sqlSessionFactory;
-	}
-
-	public ProductDao() {}
-
-  public Product selectOne(int no) {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    
-    try {
-      return sqlSession.selectOne(
-        "java63.web03.dao.ProductDao.selectOne", 
-        no /* new Integer(no) */);
-    } finally {
-      sqlSession.close();
-    }
-  }
-  
-  public void update(Product product) {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    try {
-      sqlSession.update(
-        "java63.web03.dao.ProductDao.update", product);
-      sqlSession.commit();
-    } finally {
-      sqlSession.close();
-    }
-  }
-  
-  public void delete(int no) {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    try {
-      sqlSession.delete(
-        "java63.web03.dao.ProductDao.delete", no);
-      sqlSession.commit();
-    } finally {
-      sqlSession.close();
-    }
-  }
-  
-  public List<?> selectList(int pageNo, int pageSize) {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    
-    HashMap<String,Object> paramMap = new HashMap<>();
-    paramMap.put("startIndex", ((pageNo - 1) * pageSize));
-    paramMap.put("pageSize", pageSize);
-    
-    try {
-      return sqlSession.selectList(
-        // 네임스페이스 + SQL문 아이디
-        "java63.web03.dao.ProductDao.selectList", 
-        paramMap /* SQL문을 실행할 때 필요한 값 전달 */);
-    } finally {
-      sqlSession.close();
-    }
-  }
-  
-  public void insert(Product product) {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    try {
-      sqlSession.insert(
-        "java63.web03.dao.ProductDao.insert", product);
-      sqlSession.commit();
-    } finally {
-      sqlSession.close();
-    }
-  }
+/* myBatis에서 DAO 클래스를 만들 때
+ * 다음 인터페이스에 선언된 규칙에 따라 만들 것이다.
+ * 따라서 인터페이스 선언시 약간의 규칙을 따라야 한다.
+ * 
+ * 규칙:
+ * => 파라미터는 하나여야 한다. 또한 맵퍼 파일의 파라미터 타입과 일치해야 한다.
+ * => 메서드 이름은 SQL 아이디와 같아야 한다.
+ * => 인터페이스 패키지도 SQL 맵퍼 파일의 네임스페이스와 같아야 한다.
+ */
+public interface ProductDao {
+	Product selectOne(int no);
+	void update(Product product);
+	void delete(int no);
+	List<?> selectList(Map<String, Object> params);
+	void insert(Product product);
+	
 }
 
 
