@@ -20,7 +20,7 @@ public interface ProductDao {
 	void update(Product product);
 	void delete(int no);
 	List<?> selectList(Map<String, Object> params);
-	void insert(Product product);
+	void insert(Product product); 
 	
 }
 
