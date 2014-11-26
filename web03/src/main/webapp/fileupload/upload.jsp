@@ -1,3 +1,4 @@
+<%@page import="java.io.File"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
 <%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
@@ -5,6 +6,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <%
 //멀티파트 데이터 분석하기
 
@@ -20,13 +22,22 @@ ServletFileUpload upload = new ServletFileUpload(factory);
 List<FileItem> items = upload.parseRequest(request);
 HashMap<String, String> paramMap = new HashMap<>();
 //4. 분석 결과 처리
+String fileuploadRealPath = null;
+String filename = null;
+int startNo = (int)(Math.random() * 1000);
 for (FileItem item : items) {
 	 if (item.isFormField()){//1) 일반 폼 데이터
   		 paramMap.put(item.getFieldName(), item.getString("UTF-8"));
 	 } else {//2) 바이너리 데이터
 		   paramMap.put(item.getFieldName(), item.getName());
+	 
+	    fileuploadRealPath = application.getRealPath("/fileupload");
+	    filename = System.currentTimeMillis() + "_" + (++startNo);//여러개가 아니라 1개일 수 있음
+	    File file = new File(fileuploadRealPath + "/" + filename);
+	    item.write(file);
 	 }
 	 pageContext.setAttribute("paramMap",paramMap);
+	 pageContext.setAttribute("filename",filename);
 }
 
 %>
@@ -37,9 +48,11 @@ for (FileItem item : items) {
 <title>Insert title here</title>
 </head>
 <body>
+<%= fileuploadRealPath %><br>
 이름: ${paramMap.name}<br>
 나이: ${paramMap.age}<br>
 사진: ${paramMap.photo}<br>
+<img src='${filename}'><br>
 
 </form>
 </body>

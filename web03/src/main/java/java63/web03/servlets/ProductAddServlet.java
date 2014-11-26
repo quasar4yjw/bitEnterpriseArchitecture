@@ -1,10 +1,12 @@
 package java63.web03.servlets;
 
 import java.io.IOException;
-
+import java.util.HashMap;
+import java.util.Map;
 import java63.web03.dao.MakerDao;
 import java63.web03.dao.ProductDao;
 import java63.web03.domain.Product;
+import java63.web03.util.FileUploadHelper;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,61 +28,74 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 @WebServlet("/product/add.do")
 public class ProductAddServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	protected void doGet(
 			HttpServletRequest request, 
 			HttpServletResponse response)
-			throws ServletException, IOException {
-		
+					throws ServletException, IOException {
+
 		ApplicationContext appCtx =
 				WebApplicationContextUtils.getWebApplicationContext(
 						this.getServletContext());
 		MakerDao makerDao = (MakerDao)appCtx.getBean("makerDao");
 		request.setAttribute("makers", makerDao.selectNameList());
-		
+
 		RequestDispatcher rd = 
 				request.getRequestDispatcher("/product/ProductForm.jsp");
 		rd.forward(request, response);
 	}
-	
+
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		try {
+			Map<String, String> paramMap = FileUploadHelper.parse(request);
 
-		// 다음 코드는 필터로 대체함.
-		//request.setCharacterEncoding("UTF-8");
-		
-		Product product = new Product();
-		product.setName(request.getParameter("name"));
-		product.setQuantity(Integer.parseInt(request.getParameter("qty")));
-		product.setMakerNo(Integer.parseInt(request.getParameter("mkno")));
-		
-		
-		//ProductDao productDao = (ProductDao)ContextLoaderListener.appCtx
-		//		.getBean("productDao");
-		
-		//스프링의 ContextLoaderListener가 준비한
-		//ApplicationContext 객체 꺼내기
-		ApplicationContext appCtx =
-				WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
 
-		ProductDao productDao = (ProductDao)appCtx.getBean("productDao");
-		try{
-		productDao.insert(product);
+
+			// 다음 코드는 필터로 대체함.
+			//request.setCharacterEncoding("UTF-8");
+
+			Product product = new Product();
+			product.setName(paramMap.get("name"));
+			product.setQuantity(Integer.parseInt(paramMap.get("qty")));
+			product.setMakerNo(Integer.parseInt(paramMap.get("mkno")));
+			product.setPhoto(paramMap.get("photo"));
+
+
+			//ProductDao productDao = (ProductDao)ContextLoaderListener.appCtx
+			//		.getBean("productDao");
+
+			//스프링의 ContextLoaderListener가 준비한
+			//ApplicationContext 객체 꺼내기
+			ApplicationContext appCtx =
+					WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
+
+			ProductDao productDao = (ProductDao)appCtx.getBean("productDao");
+			productDao.insert(product);
+			
+			//Map<String,Object> params = new HashMap<>();
+			//params.put("productNo", );
+			//params.put("photo", paramMap.get("photo"));
+			productDao.insertPhoto(product);
+			
+			
+			response.sendRedirect("list.do");
+		
 		} catch (Exception e) {
 			/* Forward로 다른 서블릿에게 제어권 위임하기
 			 * => 제어권이 넘어가면 돌아오지 않는다.
 			 */
-		// 다른 서블릿을 실행 => 실행 후 되돌아 제어권이 되돌아 온다.
+			// 다른 서블릿을 실행 => 실행 후 되돌아 제어권이 되돌아 온다.
 			RequestDispatcher rd = 
 					request.getRequestDispatcher("/common/Error.jsp");
 			request.setAttribute("error", e);
 			rd.forward(request, response);
 		}
-		
-		response.sendRedirect("list.do");
-		
+
+		//response.sendRedirect("list.do");
+
 		/*HttpServletResponse originResponse = (HttpServletResponse)response;
 		originResponse.sendRedirect("list.do");*/
 	}

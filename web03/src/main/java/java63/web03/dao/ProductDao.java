@@ -21,6 +21,8 @@ public interface ProductDao {
 	void delete(int no);
 	List<?> selectList(Map<String, Object> params);
 	void insert(Product product); 
+	//void insertPhoto(Map<String,Object> params);
+	void insertPhoto(Product product);
 	
 }
 
