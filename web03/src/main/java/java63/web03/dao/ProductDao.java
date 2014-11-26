@@ -18,7 +18,7 @@ import java63.web03.domain.Product;
 public interface ProductDao {
 	Product selectOne(int no);
 	void update(Product product);
-	void delete(int no);
+	void delete(int no); 
 	List<?> selectList(Map<String, Object> params);
 	void insert(Product product); 
 	
