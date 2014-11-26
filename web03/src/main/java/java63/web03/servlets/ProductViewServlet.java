@@ -1,6 +1,8 @@
 package java63.web03.servlets;
 
 import java.io.IOException;
+
+import java63.web03.dao.MakerDao;
 import java63.web03.dao.ProductDao;
 import java63.web03.domain.Product;
 
@@ -34,6 +36,10 @@ public class ProductViewServlet extends HttpServlet{
 		
 		Product product = productDao.selectOne(no);
 		request.setAttribute("product", product);
+		
+		MakerDao makerDao = (MakerDao)appCtx.getBean("makerDao");
+		request.setAttribute("makers", makerDao.selectNameList());
+		
 		
 	// include를 수행할 때는 여기에서 콘텐츠 타입을 설정해야 한다.
 			response.setContentType("text/html;charset=UTF-8");

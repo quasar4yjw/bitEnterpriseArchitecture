@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,8 +29,12 @@
 <div class='form-group'>
   <label for='mkno' class='col-sm-2 control-label'>제조사</label>
   <div class='col-sm-10'>
-   <input type='text' class='form-control' 
-        id='mkno' name='mkno' placeholder='제조사 번호 예) 2'>
+  <select id='mkno' name='mkno' class='form-control'>
+     <option value="0">제조사를 선택하세요</option>
+      <c:forEach items="${makers}" var="maker">
+       <option value="${maker.no}">${maker.name}</option>
+      </c:forEach>
+  </select>
   </div>
 </div>
 <div class='form-group'>
@@ -57,8 +62,8 @@
       return false;
     }
    
-   if ( $('#mkno').val().length == 0) {
-      alert('제조사 번호는 필수 입력 항목입니다.');
+   if ( $('#mkno').val() == '0') {
+      alert('제조사를 선택하세요');
       return false;
     }
  });

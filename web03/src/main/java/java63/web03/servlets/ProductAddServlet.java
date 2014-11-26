@@ -1,6 +1,8 @@
 package java63.web03.servlets;
 
 import java.io.IOException;
+
+import java63.web03.dao.MakerDao;
 import java63.web03.dao.ProductDao;
 import java63.web03.domain.Product;
 
@@ -30,6 +32,12 @@ public class ProductAddServlet extends HttpServlet{
 			HttpServletRequest request, 
 			HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		ApplicationContext appCtx =
+				WebApplicationContextUtils.getWebApplicationContext(
+						this.getServletContext());
+		MakerDao makerDao = (MakerDao)appCtx.getBean("makerDao");
+		request.setAttribute("makers", makerDao.selectNameList());
 		
 		RequestDispatcher rd = 
 				request.getRequestDispatcher("/product/ProductForm.jsp");

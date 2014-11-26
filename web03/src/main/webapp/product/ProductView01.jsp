@@ -45,7 +45,7 @@ id="product"></jsp:useBean> --%>
       <c:forEach items="${makers}" var="maker">
        
        <option value="${maker.no}" 
-       >${maker.name}</option>
+       <c:if test="${maker.no==product.makerNo}">selected</c:if>>${maker.name}</option>
       </c:forEach>
   </select>
  </div>
@@ -61,11 +61,6 @@ id="product"></jsp:useBean> --%>
 </div>
 <script src='../js/jquery-1.11.1.js'></script>
 <script>
- $(function(){
-	  $('#mkno').val(${product.makerNo});
-	 
- });
-
  $('#btnCancel').click(function(){
   history.back();
  });
@@ -83,9 +78,9 @@ $('#btnUpdate').click(function() {
   alert('수량은 필수 입력 항목입니다.');
   return false;
  }
- if ( $('#mkno').val() == '0') {
-     alert('제조사를 선택하세요');
-     return false;
+ if ($('#mkno').val().length == 0) {
+  alert('제조사번호는 필수 입력 항목입니다.');
+  return false;
  }
 });
 </script>
