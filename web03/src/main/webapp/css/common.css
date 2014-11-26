@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+
+.container {
+	 width: 800px;
+}
+/* .container td{
+  height: 800px;
+} */
+
+
+.copyright {
+	 text-align: center;
+	 color: royalblue;
+}
+
+.form-control{
+}
+
+
+.customPadding{
+	padding:5px;
+}
+
+
+
+
+
+
+
+
+
+
