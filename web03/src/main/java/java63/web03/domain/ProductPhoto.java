@@ -38,5 +38,6 @@ public class ProductPhoto implements Serializable{
 	
 	
 	
-} //9:23 toString반복문 ~ mac air 20xx 9:27 Tomcat 혼자
-// 10:02 soft dev japan
+} //9:23 toString반복문(V) ~(V)주변장치 mac air ssd 2012(V) 
+//9:27 Tomcat 혼자(V)
+// 10:02 soft dev japan 관리 못따라가(V)

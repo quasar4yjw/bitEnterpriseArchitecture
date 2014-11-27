@@ -4,8 +4,9 @@
 <% 
 // 쿠키 만료일 지정하기 => 브라우저를 종료하더라도 만료일 기간 동안은 유지한다.
 //하드디스크 유지
-Cookie cookie1 = new Cookie("name", "aaa");
+Cookie cookie1 = new Cookie("name", "aaaa");
 cookie1.setMaxAge(60);
+cookie1.setPath("/web03/");
 Cookie cookie2 = new Cookie("tel", "111-2222");
 cookie2.setMaxAge(60);
 

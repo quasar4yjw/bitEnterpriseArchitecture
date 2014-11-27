@@ -5,7 +5,7 @@
 // 쿠키 만료일 지정하기 => 브라우저를 종료하더라도 만료일 기간 동안은 유지한다.
 //하드디스크 유지
 // 쿠키를 보낼 수 있는 URL을 지정하기
-Cookie cookie1 = new Cookie("name", "aaa");
+Cookie cookie1 = new Cookie("name", "bbb");
 cookie1.setPath("/web03");
 Cookie cookie2 = new Cookie("tel", "111-2222");
 cookie2.setPath("/web03");
