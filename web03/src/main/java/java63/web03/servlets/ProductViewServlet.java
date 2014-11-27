@@ -36,6 +36,9 @@ public class ProductViewServlet extends HttpServlet{
 		
 		Product product = productDao.selectOne(no);
 		request.setAttribute("product", product);
+		request.setAttribute("photos", 
+				productDao.selectPhoto(product.getNo()));
+		
 		
 		MakerDao makerDao = (MakerDao)appCtx.getBean("makerDao");
 		request.setAttribute("makers", makerDao.selectNameList());

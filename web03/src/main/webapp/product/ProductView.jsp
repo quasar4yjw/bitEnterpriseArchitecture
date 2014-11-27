@@ -6,6 +6,13 @@
 <html>
 <head>
 <jsp:include page="/common/Header.jsp"/>
+<style>
+.prod-pho {
+  border: 1px solid royalblue;
+  width: 200px;
+  height: 200px;
+}
+</style>
 </head>
 <body>
 <div class='container'>
@@ -50,6 +57,18 @@ id="product"></jsp:useBean> --%>
   </select>
  </div>
 </div>
+
+<div class='form-group'>
+<label for='photosDiv' class='col-sm-2 control-label'>사진</label>
+<div class='col-sm-10' id='photosDiv'>
+  <c:forEach items='${photos}' var='photo'>
+    <img class='prod-pho' src='${
+        pageContext.servletContext.contextPath
+    }/fileupload/${photo.url}'>
+ </c:forEach>
+ </div>
+</div>
+
 <div class='form-group'>
  <div class='col-sm-offset-2 col-sm-10'>
   <button id='btnUpdate' type='submit' class='btn btn-primary'>변경</button>

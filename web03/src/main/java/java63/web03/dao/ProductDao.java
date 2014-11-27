@@ -23,6 +23,7 @@ public interface ProductDao {
 	void insert(Product product); 
 	//void insertPhoto(Map<String,Object> params);
 	void insertPhoto(Product product);
+	List<?> selectPhoto(int productNo);
 	
 }
 
