@@ -1,6 +1,9 @@
 package java63.web03.servlets;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java63.web03.dao.MemberDao;
+import java63.web03.domain.Member;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +12,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /* POST 요청 처리
  *  => 한글이 깨지는 문제 해결
@@ -73,7 +80,26 @@ public class LoginServlet extends HttpServlet{
 			}
 			
 			
-			/*Map<String, String> paramMap = FileUploadHelper.parse(request); */
+			ApplicationContext appCtx =
+					WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
+			
+			MemberDao memberDao = (MemberDao)appCtx.getBean("memberDao");
+			HashMap<String,String> params = new HashMap<>();
+			params.put("userId", uid);
+			params.put("password", pwd);
+			Member member = memberDao.existUser(params);
+			HttpSession session = request.getSession();
+			if (member != null) {
+				session.setAttribute("loginUser", member);
+				response.sendRedirect("../product/list.do");
+				return;
+			} else {
+				session.invalidate();//세션을 제거하고 새로 만든다.
+				response.sendRedirect("login.do");// 로그인 폼으로 보낸다.
+			}
+			
+			
+			/*Map<String, String> paramMap = FileUploadHelper.parse(request); 
 
 
 /*

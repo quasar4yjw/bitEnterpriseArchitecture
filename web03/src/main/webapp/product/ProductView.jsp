@@ -16,7 +16,8 @@
 </head>
 <body>
 <div class='container'>
-<h1>제품 정보(v1.1)</h1>
+<jsp:include page="/common/LoginPanel.jsp"/>
+<h1>제품 정보(v2.0)</h1>
 
 <%-- <jsp:useBean 
 scope="request"

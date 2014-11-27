@@ -9,7 +9,8 @@
 </head>
 <body>
 <div class='container'>
-<h1>제품 목록(by JSP v1.1)</h1>
+<jsp:include page="/common/LoginPanel.jsp"/>
+<h1>제품 목록(by JSP v2.0)</h1>
 <p><a href='add.do' class='btn btn-primary'>새제품</a></p>
 <table class='table table-hover'>
 <tr>
