@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /* Redirect
  * => 클라이언트에게 콘텐츠를 보내지 않는다.
@@ -15,15 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
  * 
  */
 
-@Component
+@Component("/product/delete.do")
 public class ProductDeleteControl {
 	
 	@Autowired
 	ProductDao productDao;
 	
-	@RequestMapping("/product/delete.do")
-	public String execute(@RequestParam int no)
+	@RequestMapping
+	public String execute(HttpServletRequest request)
 			throws Exception {
+		
+		int no = Integer.parseInt(request.getParameter("no"));
 		productDao.deletePhoto(no);
 		productDao.delete(no);
 		

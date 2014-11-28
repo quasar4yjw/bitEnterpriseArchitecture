@@ -1,19 +1,21 @@
 package java63.web03.control;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@Component("/auth/logout.do")
+// @Component("/auth/logout.do")
+@Controller
 public class LogoutControl {
 
-	@RequestMapping
+	@RequestMapping("/auth/logout.do")
 	public String execute(
-			HttpServletRequest request)
+			HttpSession session)
 					throws Exception {
-		request.getSession().invalidate();
+		//request.getSession().invalidate();
+	  session.invalidate();
 		return "redirect:login.do";
 	}
 
