@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Component("/product/update.do")
@@ -14,6 +15,7 @@ public class ProductUpdateControl {
 
 	@Autowired ProductDao productDao;
 	
+	@RequestMapping
 	public String execute(HttpServletRequest request)
 			throws Exception {
 

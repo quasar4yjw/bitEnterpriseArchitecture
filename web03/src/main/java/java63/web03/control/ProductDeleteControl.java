@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /* Redirect
  * => 클라이언트에게 콘텐츠를 보내지 않는다.
@@ -19,6 +20,7 @@ public class ProductDeleteControl {
 	@Autowired
 	ProductDao productDao;
 	
+	@RequestMapping
 	public String execute(HttpServletRequest request)
 			throws Exception {
 		

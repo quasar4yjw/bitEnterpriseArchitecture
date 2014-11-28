@@ -2,6 +2,7 @@ package java63.web03.control;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import java63.web03.dao.MemberDao;
 import java63.web03.domain.Member;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /* POST 요청 처리
@@ -26,6 +28,7 @@ public class LoginControl {
 
 	@Autowired MemberDao memberDao;
 
+	@RequestMapping
 	public String execute(
 			HttpServletRequest request)	throws Exception {
 

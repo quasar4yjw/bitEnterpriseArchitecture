@@ -1,6 +1,7 @@
 package java63.web03.control;
 
 import java.util.Map;
+
 import java63.web03.dao.MakerDao;
 import java63.web03.dao.ProductDao;
 import java63.web03.domain.Product;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Component("/product/add.do")
@@ -17,7 +19,7 @@ public class ProductAddControl {
 	@Autowired MakerDao makerDao;
 	@Autowired ProductDao productDao;
 	
-	
+	@RequestMapping
 	public String execute(
 			HttpServletRequest request)
 					throws Exception {

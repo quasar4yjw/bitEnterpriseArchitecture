@@ -107,6 +107,11 @@ ORDER BY T1.PNO
     WHERE PNO = #{value}
     </if>
   </select>
+  
+  <delete id="deletePhoto" parameterType="int">
+   DELETE FROM PROD_PHOTS
+   WHERE PNO=#{VALUE}
+  </delete>
 </mapper>
 
 
