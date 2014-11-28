@@ -6,18 +6,10 @@
 <html>
 <head>
 <jsp:include page="/common/Header.jsp"/>
-<style>
-.prod-pho {
-  border: 1px solid royalblue;
-  width: 200px;
-  height: 200px;
-}
-</style>
 </head>
 <body>
 <div class='container'>
-<jsp:include page="/common/LoginPanel.jsp"/>
-<h1>제품 정보(v2.0)</h1>
+<h1>제품 정보(v1.1)</h1>
 
 <%-- <jsp:useBean 
 scope="request"
@@ -42,34 +34,22 @@ id="product"></jsp:useBean> --%>
 <label for='qty' class='col-sm-2 control-label'>수량</label>
 <div class='col-sm-10'>
    <input type='text' class='form-control' 
-     id='qty' name='quantity' value='${product.quantity}'>
+     id='qty' name='qty' value='${product.quantity}'>
  </div>
  </div>
 <div class='form-group'>
 <label for='mkno' class='col-sm-2 control-label'>제조사</label>
 <div class='col-sm-10'>
-    <select id='mkno' name='makerNo' class='form-control'>
+    <select id='mkno' name='mkno' class='form-control'>
      <option value="0">제조사를 선택하세요</option>
       <c:forEach items="${makers}" var="maker">
        
        <option value="${maker.no}" 
-       >${maker.name}</option>
+       <c:if test="${maker.no==product.makerNo}">selected</c:if>>${maker.name}</option>
       </c:forEach>
   </select>
  </div>
 </div>
-
-<div class='form-group'>
-<label for='photosDiv' class='col-sm-2 control-label'>사진</label>
-<div class='col-sm-10' id='photosDiv'>
-  <c:forEach items='${photos}' var='photo'>
-    <img class='prod-pho' src='${
-        pageContext.servletContext.contextPath
-    }/fileupload/${photo.url}'>
- </c:forEach>
- </div>
-</div>
-
 <div class='form-group'>
  <div class='col-sm-offset-2 col-sm-10'>
   <button id='btnUpdate' type='submit' class='btn btn-primary'>변경</button>
@@ -81,14 +61,8 @@ id="product"></jsp:useBean> --%>
 </div>
 <script src='../js/jquery-1.11.1.js'></script>
 <script>
- $(function(){
-	  $('#mkno').val(${product.makerNo});
-	 
- });
-
  $('#btnCancel').click(function(){
-  /* history.back(); */
-  location.href = 'list.do';
+  history.back();
  });
 $('#btnDelete').click(function(){
  if (confirm('삭제하시겠습니까?')){
@@ -104,9 +78,9 @@ $('#btnUpdate').click(function() {
   alert('수량은 필수 입력 항목입니다.');
   return false;
  }
- if ( $('#mkno').val() == '0') {
-     alert('제조사를 선택하세요');
-     return false;
+ if ($('#mkno').val().length == 0) {
+  alert('제조사번호는 필수 입력 항목입니다.');
+  return false;
  }
 });
 </script>

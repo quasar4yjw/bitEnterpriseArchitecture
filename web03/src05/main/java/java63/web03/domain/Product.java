@@ -18,17 +18,14 @@ package java63.web03.domain;
 
 import java.io.Serializable;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class Product implements Serializable {
   private static final long serialVersionUID = 1L;
   
-  protected int      						 no;
-  protected String    					 name;
-  protected int      						 quantity;
-  protected int      						 makerNo;
-  protected String   						 photo;
-  protected MultipartFile 		   photofile;
+  protected int       no;
+  protected String    name;
+  protected int       quantity;
+  protected int       makerNo;
+  protected String    photo;
 	public int getNo() {
 		return no;
 	}
@@ -64,13 +61,7 @@ public class Product implements Serializable {
 		return "Product [no=" + no + ", name=" + name + ", quantity=" + quantity
 				+ ", makerNo=" + makerNo + ", photo=" + photo + "]";
 	}
-	public MultipartFile getPhotofile() {
-		return photofile;
-	}
-	public void setPhotofile(MultipartFile photofile) {
-		this.photofile = photofile;
-	}
-	
+  
   
   
 }
