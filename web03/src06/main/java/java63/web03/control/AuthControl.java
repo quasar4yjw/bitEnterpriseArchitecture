@@ -1,11 +1,13 @@
 package java63.web03.control;
 
 import java.util.HashMap;
+
 import java63.web03.dao.MemberDao;
 import java63.web03.domain.Member;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,21 +15,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 
-
+/* POST 요청 처리
+ *  => 한글이 깨지는 문제 해결
+ *  => getParameter()를 호출하기 전에
+ *     request.setCharacterEncoding("UTF-8") 호출하라!
+ *     => 클라이언트가 보내는 데이터의 문자 집합을 알려줘라(지정하라!!!)
+ */
+//@Component("/auth/logout.do")
 @Controller
 @RequestMapping("/auth")
-/* @SessionAttributes
- * => Model에 저장되는 값 중에서 세션에 저장될 객체를 지정한다.
- * => 사용법
- *    @SessionAttributes({"key", "key", ...})
- */
-// 만약 Model에 loginUser라는 이름으로 값을 저장한다면
-// 그 값은 request에 보관하지 말고 session에 보관하라!
-// 그 값은 세션에 있는 값이다.
-@SessionAttributes({"loginUser", "requestUrl"})
 public class AuthControl {
 
 	@Autowired MemberDao memberDao;
@@ -55,10 +52,8 @@ public class AuthControl {
 					String uid, 
 					String pwd, 
 					String save,
-					String requestUrl,
 					HttpServletResponse response,
-					Model model,
-					SessionStatus status)	throws Exception {
+					HttpSession session)	throws Exception {
 
 			/*System.out.println(uid);
 			System.out.println(pwd);
@@ -87,16 +82,16 @@ public class AuthControl {
 			
 			/*HttpSession session = request.getSession();*/
 			if (member != null) {
-			      	model.addAttribute("loginUser", member);
-			      	if (requestUrl != null) {
-				      return "redirect:" + requestUrl;
+				session.setAttribute("loginUser", member);
+
+				if (session.getAttribute("requestUrl") != null) {
+					return "redirect:" +
+							(String)session.getAttribute("requestUrl");
 				} else {
 					return "redirect:../product/list.do";
 				}
 			} else {
-				      //@SessionAttributes로 지정된 값을 무효화시킨다.
-				      // => 주의!!!! 세션 전체를 무효화시키지 않는다.
-				      status.setComplete();
+				session.invalidate();//세션을 제거하고 새로 만든다.
 				return "redirect:login.do";// 로그인 폼으로 보낸다.
 			}
 
@@ -104,9 +99,10 @@ public class AuthControl {
 		 
 			@RequestMapping("/logout")
 			public String execute(
-					SessionStatus status)
+					HttpSession session)
 							throws Exception {
-			    status.setComplete();
+				//request.getSession().invalidate();
+			  session.invalidate();
 				return "redirect:login.do";
 			}
 
