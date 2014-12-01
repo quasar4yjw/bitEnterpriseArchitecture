@@ -54,7 +54,7 @@ public class ProductControl {
 	public ModelAndView form() throws Exception { // 5~6년전
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("makers", makerDao.selectNameList());
-		mv.setViewName("/product/ProductForm.jsp");
+		mv.setViewName("product/ProductForm");
 		return mv;
 	}
 
@@ -164,7 +164,7 @@ public class ProductControl {
 					request.getRequestDispatcher("/product/ProductList.jsp");
 			rd.include(request, response);*/
 			
-			return "/product/ProductList.jsp";
+			return "product/ProductList";
 
 
 	}
@@ -201,7 +201,7 @@ public class ProductControl {
 				productDao.selectPhoto(product.getNo()));
 		
 		model.addAttribute("makers", makerDao.selectNameList());
-			return "/product/ProductView.jsp";
+			return "product/ProductView";
 	}
 	
 	
