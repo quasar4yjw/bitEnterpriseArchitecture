@@ -18,6 +18,7 @@
   <result column="PNAME" property="name"/>
   <result column="QTY" property="quantity"/>
   <result column="MKNO" property="makerNo"/>
+  <result column="MADE_DATE" property="madeDate"/>
  </resultMap>
  
   <resultMap type="ProductListItem" id="productListItemMap">
@@ -48,7 +49,8 @@ SELECT
       PNO,
       PNAME,
       QTY,
-      MKNO  
+      MKNO,
+      MADE_DATE  
     FROM PRODUCTS
 </sql>
 
@@ -75,8 +77,8 @@ ORDER BY T1.PNO
   
   <insert id="insert"
           parameterType="Product" useGeneratedKeys="true" keyColumn="PNO" keyProperty="no">
-    INSERT INTO PRODUCTS(PNAME,QTY,MKNO) 
-    VALUES (#{name}, #{quantity}, #{makerNo})
+    INSERT INTO PRODUCTS(PNAME,QTY,MKNO, MADE_DATE) 
+    VALUES (#{name}, #{quantity}, #{makerNo}, #{madeDate})
   </insert>
   
   <update id="update"
@@ -84,7 +86,8 @@ ORDER BY T1.PNO
     UPDATE PRODUCTS SET 
       PNAME=#{name},
       QTY=#{quantity},
-      MKNO=#{makerNo} 
+      MKNO=#{makerNo},
+      MADE_DATE=#{madeDate}
     WHERE PNO=#{no}
   </update>
   

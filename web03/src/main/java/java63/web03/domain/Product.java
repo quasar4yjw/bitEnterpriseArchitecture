@@ -17,6 +17,7 @@
 package java63.web03.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +30,7 @@ public class Product implements Serializable {
   protected int      						 makerNo;
   protected String   						 photo;
   protected MultipartFile 		   photofile;
+  protected Date               	 madeDate;
 	public int getNo() {
 		return no;
 	}
@@ -59,16 +61,23 @@ public class Product implements Serializable {
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
-	@Override
-	public String toString() {
-		return "Product [no=" + no + ", name=" + name + ", quantity=" + quantity
-				+ ", makerNo=" + makerNo + ", photo=" + photo + "]";
-	}
 	public MultipartFile getPhotofile() {
 		return photofile;
 	}
 	public void setPhotofile(MultipartFile photofile) {
 		this.photofile = photofile;
+	}
+	public Date getMadeDate() {
+		return madeDate;
+	}
+	public void setMadeDate(Date madeDate) {
+		this.madeDate = madeDate;
+	}
+	@Override
+	public String toString() {
+		return "Product [no=" + no + ", name=" + name + ", quantity=" + quantity
+				+ ", makerNo=" + makerNo + ", photo=" + photo + ", madeDate="
+				+ madeDate + "]";
 	}
 	
   

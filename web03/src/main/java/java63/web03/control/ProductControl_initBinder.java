@@ -37,10 +37,10 @@ import org.springframework.web.servlet.ModelAndView;
 //방법 4) @Component 
 //방법 4) @RequestMapping("/product")
 //@Component // Spring IoC 컨테이너의 기본 객체를 지정할 때 주로 사용.
-@Controller // Spring MVC의 컴포넌트(페이지 컨트롤러)임을 지정할 때 사용.
+//@Controller // Spring MVC의 컴포넌트(페이지 컨트롤러)임을 지정할 때 사용.
 @RequestMapping("/product")
-public class ProductControl {
-	static Logger log = Logger.getLogger(ProductControl.class);
+public class ProductControl_initBinder {
+	static Logger log = Logger.getLogger(ProductControl_initBinder.class);
 	static final int PAGE_DEFAULT_SIZE = 3;
 	@Autowired MakerDao makerDao;
 	@Autowired ProductDao productDao;
@@ -204,6 +204,33 @@ public class ProductControl {
 			return "/product/ProductView.jsp";
 	}
 	
+	//@InitBinder
+	// => 요청 파라미터 값을 도메인 객체의 프로퍼티 값으로 변환해주는 
+	//    변환기 등록
+	// => "이봐~~ 프론트 컨트롤러. 다음 메서드는 요청 파라미터를
+	//    값 객체의 프로퍼티 값으로 바꿔주는 변환기를 등록하는 메서드야.
+	//    요청을 처리하기 전에 꼭 호출해줘!!"
+	//    "호출 안하면 문자열을 java.util.Date 객체로 바꿀 수가 없어서,
+	//     오류(400 Bad Request)가 뜰거야. 꼭 호출해주오T_T"
+	@InitBinder
+  public void initBinder(WebDataBinder binder) {
+			log.debug("initBinder() 호출됨");
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      dateFormat.setLenient(false);
+      
+      // 문자열을 특정 타입으로 바꿀 변환기를 등록
+      binder.registerCustomEditor(
+      		Date.class, /* 어떤 타입으로 바꿀 것인지 지정 */ 
+      		new CustomDateEditor(dateFormat, true/*빈문자열 허용*/)); /* 변환기 */
+  }
 	
+	public static void main(String[] args) throws Exception{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    
+		// 기본은 true => 날짜가 초과되면 자동으로 계산한다. 예외 안띄운다.
+		// false로 설정 => 문자열을 엄격히 검사한다. 형식이 맞지 않으면 예외 발생!
+		// dateFormat.setLenient(false); "관대함"
+    System.out.println(dateFormat.parse("2014-12-40"));
+	}
 	
 }

@@ -38,6 +38,14 @@
   </select>
   </div>
 </div>
+<div class='form-group'>
+  <label for='madeDate' class='col-sm-2 control-label'>제조일</label>
+  <div class='col-sm-10'>
+    <input type="date" class='form-control' 
+        id='madeDate' name='madeDate' placeholder='제조일 예) 2014-12-25'>
+  </div>
+</div>
+
 
 <div class='form-group'>
   <label for='photo' class='col-sm-2 control-label'>사진</label>
