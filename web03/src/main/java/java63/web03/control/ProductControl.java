@@ -97,7 +97,7 @@ public class ProductControl {
 
 		productDao.insert(product);
 		productDao.insertPhoto(product);
-		return "forward:list.do";
+		return "redirect:list.do";
 	}
 	
 	
