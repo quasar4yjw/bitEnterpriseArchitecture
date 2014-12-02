@@ -37,11 +37,11 @@ import org.springframework.web.servlet.ModelAndView;
 //방법 4) @Component 
 //방법 4) @RequestMapping("/product")
 //@Component // Spring IoC 컨테이너의 기본 객체를 지정할 때 주로 사용.
-@Controller // Spring MVC의 컴포넌트(페이지 컨트롤러)임을 지정할 때 사용.
+//@Controller // Spring MVC의 컴포넌트(페이지 컨트롤러)임을 지정할 때 사용.
 @RequestMapping("/product")
-public class ProductControl {
-	static Logger log = Logger.getLogger(ProductControl.class);
-	static final int PAGE_DEFAULT_SIZE = 5;
+public class ProductControl02 {
+	static Logger log = Logger.getLogger(ProductControl02.class);
+	static final int PAGE_DEFAULT_SIZE = 3;
 	@Autowired MakerDao makerDao;
 	@Autowired ProductDao productDao;
 	@Autowired ServletContext servletContext;
@@ -124,11 +124,19 @@ public class ProductControl {
 	 */
 	@RequestMapping("/list")
 	public String list(
-			@RequestParam(defaultValue="1")int pageNo,
-			@RequestParam(defaultValue="5")int pageSize,
+			@RequestParam(defaultValue="0")int pageNo,
+			@RequestParam(defaultValue="0")int pageSize,
 			Model model)
 			throws Exception, IOException {
 
+
+		
+			
+
+		
+			if (pageNo > 0) {
+				pageSize = PAGE_DEFAULT_SIZE;
+			}
 
 		/*	if (request.getParameter("pageSize") != null) {
 				pageSize = Integer.parseInt(request.getParameter("pageSize"));
@@ -136,33 +144,16 @@ public class ProductControl {
 			
 			/*	response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();*/
-			
-			if (pageSize <= 0)
-				pageSize = PAGE_DEFAULT_SIZE;
-			
-			int totalSize = productDao.totalSize();
-			int maxPageNo = totalSize / pageSize;
-			if ((totalSize % pageSize) > 0 ) maxPageNo++;
 
-			if (pageNo <= 0)	pageNo = 1;
-	    if (pageNo > maxPageNo) pageNo = maxPageNo;
+
 			
 			HashMap<String,Object> paramMap = new HashMap<>();
 	    paramMap.put("startIndex", ((pageNo - 1) * pageSize));
 	    paramMap.put("pageSize", pageSize);
-	    
+
+
 			//List<Product> products = productDao.selectList(pageNo, pageSize);
 			model.addAttribute("products", productDao.selectList(paramMap));
-			
-			model.addAttribute("currPageNo", pageNo);
-			
-			if (pageNo > 1) {
-				model.addAttribute("prevPageNo", (pageNo - 1));
-			}
-			
-			if (pageNo < maxPageNo) {
-				model.addAttribute("nextPageNo", (pageNo + 1));
-			}
 
 			// include를 수행할 때는 여기에서 콘텐츠 타입을 설정해야 한다.
 

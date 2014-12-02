@@ -75,6 +75,12 @@ ORDER BY T1.PNO
     WHERE PNO=#{value}
   </select>
   
+  
+  <select id="totalSize" 
+          resultType="int">
+    SELECT count(PNO) FROM PRODUCTS;
+  </select>
+  
   <insert id="insert"
           parameterType="Product" useGeneratedKeys="true" keyColumn="PNO" keyProperty="no">
     INSERT INTO PRODUCTS(PNAME,QTY,MKNO, MADE_DATE) 
