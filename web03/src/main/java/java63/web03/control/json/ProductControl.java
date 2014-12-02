@@ -155,14 +155,15 @@ public class ProductControl {
 			model.addAttribute("products", productDao.selectList(paramMap));
 			
 			model.addAttribute("currPageNo", pageNo);
+			model.addAttribute("maxPageNo", maxPageNo);
 			
-			if (pageNo > 1) {
+			/*if (pageNo > 1) {
 				model.addAttribute("prevPageNo", (pageNo - 1));
 			}
 			
 			if (pageNo < maxPageNo) {
 				model.addAttribute("nextPageNo", (pageNo + 1));
-			}
+			}*/
 
 			// include를 수행할 때는 여기에서 콘텐츠 타입을 설정해야 한다.
 
