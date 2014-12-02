@@ -1,10 +1,62 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
+<link rel='stylesheet' href='/web03/css/bootstrap.min.css'>
+<link rel='stylesheet' href='/web03/css/bootstrap-theme.min.css'>
+<link rel='stylesheet' href='/web03/css/common.css'>
 </head>
 <body>
+<div class='container'>
 
+<div class='header'>
+<p class='userinfo'>
+ <a href='mailto:u01@test.com'>홍길동</a></p>
+<p class='logout'><a href='/web03/auth/logout.do'>로그아웃</a></p>
+</div>
+<h1>제품 목록(by JSP v2.0)</h1>
+<p><a href='add.do' class='btn btn-primary'>새제품</a></p>
+<table id='productTable' class='table table-hover'>
+<tr>
+<th>#</th><th>제품</th><th>수량</th><th>제조사</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td><a href='view.do?no=1'>아이폰6</a></td>
+<td>100</td>
+<td>애플</td>
+</tr>
+
+</table>
+
+<div id='pagingBar'>
+ <a href='list.do?pageNo=2' class='btn btn-default'>다음</a>
+<span>1</span>
+ <a href='list.do?pageNo=2' class='btn btn-default'>다음</a>
+</div>
+</div>
+<address class='copyright'>Copyright&copy; TEAM team</address>
+<script src='../js/jquery-1.11.1.js'></script>
+<script>
+$.getJSON('../json/product/list.do', function(data){
+  //console.log(data); 
+	 var currPageNo = data.currPageNo
+	 var products = data.products;
+	/*  var prevPageNo = currPageNo - 1;
+	 if(data.prevPageNo) */
+	 
+	 for (var i = 0; i < data.products.length; i++) {
+	  //console.log(data.products[i]);
+    $('<tr>')
+			    .append($('<td>').html(products[i].no))
+			    .append($('<td>').html(products[i].name))
+			    .append($('<td>').html(products[i].quantity))
+			    .append($('<td>').html(products[i].maker))
+			    .appendTo('#productTable')
+	 }	
+});
+</script>
 </body>
 </html>
