@@ -123,10 +123,9 @@ public class ProductControl {
 	 * => 즉 이 메서드를 호출해라!!
 	 */
 	@RequestMapping("/list")
-	public String list(
+	public Object list(
 			@RequestParam(defaultValue="1")int pageNo,
-			@RequestParam(defaultValue="5")int pageSize,
-			Model model)
+			@RequestParam(defaultValue="5")int pageSize)
 			throws Exception, IOException {
 
 
@@ -151,12 +150,14 @@ public class ProductControl {
 	    paramMap.put("startIndex", ((pageNo - 1) * pageSize));
 	    paramMap.put("pageSize", pageSize);
 	    
+	    HashMap<String,Object> resultMap = new HashMap<>();
 			//List<Product> products = productDao.selectList(pageNo, pageSize);
-			model.addAttribute("products", productDao.selectList(paramMap));
-			
-			model.addAttribute("currPageNo", pageNo);
-			model.addAttribute("maxPageNo", maxPageNo);
-			
+	    resultMap.put("status","success");
+	    resultMap.put("currPageNo", pageNo);
+	    resultMap.put("maxPageNo", maxPageNo);
+	    resultMap.put("products", productDao.selectList(paramMap));
+
+	    return resultMap;
 			/*if (pageNo > 1) {
 				model.addAttribute("prevPageNo", (pageNo - 1));
 			}
@@ -174,7 +175,6 @@ public class ProductControl {
 					request.getRequestDispatcher("/product/ProductList.jsp");
 			rd.include(request, response);*/
 			
-			return "json/product/ProductList";
 
 
 	}

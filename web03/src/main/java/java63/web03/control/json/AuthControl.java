@@ -1,11 +1,13 @@
 package java63.web03.control.json;
 
 import java.util.HashMap;
+
 import java63.web03.dao.MemberDao;
 import java63.web03.domain.Member;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 
-@Controller("json.AuthControl")
+@Controller("json.authControl")
 @RequestMapping("/json/auth")
 /* @SessionAttributes
  * => Model에 저장되는 값 중에서 세션에 저장될 객체를 지정한다.
@@ -45,8 +47,15 @@ public class AuthControl {
 	// The request sent by the client was syntactically incorrect.
 	// 파라미터 타입(int => Date)을 변경할 수 없거나 필수 파라미터가 넘어오지 않을 때
 	@RequestMapping(value="/loginUser", method=RequestMethod.GET)
-	public String loginUser()	throws Exception {
-		return "json/auth/LoginUser"; // "/WEB-INF/view/auth/LoginForm.jsp";
+	public Object loginUser(HttpSession session)	throws Exception {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		if (session.getAttribute("loginUser") != null) {
+			resultMap.put("status", "success");
+			resultMap.put("loginUser", session.getAttribute("loginUser"));
+		} else {
+			resultMap.put("status", "fail");
+		}
+		return resultMap;//"json/auth/LoginUser"; // "/WEB-INF/view/auth/LoginForm.jsp";
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
