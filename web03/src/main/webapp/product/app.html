@@ -109,16 +109,16 @@ function setPageNo(currPageNo, maxPageNo) {
 function loadProductList(pageNo) {
 $.getJSON('../json/product/list.do?pageNo=' + pageNo, 
 		   function(data){
-	     console.log(data);
+	     //console.log(data);
 	
 		    //console.log(data); 
-		     //  setPageNo(data.currPageNo, data.maxPageNo);
+		       setPageNo(data.currPageNo, data.maxPageNo);
 		    //var currPageNo = data.currPageNo;
-		     //  var products = data.products;
+		       var products = data.products;
 		   /*  var prevPageNo = currPageNo - 1;
 		    if(data.prevPageNo) */
 		    
-		    /* $('.data-row').remove();
+		     $('.data-row').remove();
 		      for (var i = 0; i < products.length; i++) {
 		        $('<tr>').addClass('data-row')
 		     //console.log(data.products[i]);
@@ -132,7 +132,7 @@ $.getJSON('../json/product/list.do?pageNo=' + pageNo,
 		         .append($('<td>').html(products[i].quantity))
 		         .append($('<td>').html(products[i].maker))
 		         .appendTo('#productTable')
-		    }  */
+		    }  
 		  });
 }
 </script>
