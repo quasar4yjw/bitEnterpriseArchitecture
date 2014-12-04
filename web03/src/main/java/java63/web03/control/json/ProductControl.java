@@ -123,15 +123,17 @@ public class ProductControl {
 	
 	
 	@RequestMapping("/delete")
-	public String delete(@RequestParam int no)
+	public Object delete(@RequestParam int no)
 			throws Exception {
 		productDao.deletePhoto(no);
 		productDao.delete(no);
 		
 		//해당 제품의 사진 경로를 알아내서
 		//파일 시스템에서 지운다.
-		
-		return "redirect:list.do";
+		HashMap<String,Object> resultMap = new HashMap<>();
+    resultMap.put("status", "success");
+		return resultMap;
+		//return "redirect:list.do";
 	}
 
 	

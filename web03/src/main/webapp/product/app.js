@@ -78,7 +78,9 @@ function setPageNo(currPageNo, maxPageNo) {
 
 
 function loadProductList(pageNo) {
-$.getJSON('../json/product/list.do?pageNo=' + pageNo, 
+  if (pageNo <= 0) pageNo = currPageNo;
+  
+  $.getJSON('../json/product/list.do?pageNo=' + pageNo, 
 		   function(data){
 	     //console.log(data);
 	

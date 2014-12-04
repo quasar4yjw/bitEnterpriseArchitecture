@@ -1,6 +1,16 @@
 <h1>제품 등록</h1>
 <form class='form-horizontal' role='form'>
 
+	<div class='my-update-form form-group' style='display:none'>
+	    <label for='no' class='col-sm-2 control-label'>번호</label>
+	    <div class='col-sm-10'>
+	      <input readonly type='text' class='form-control' id='no'>
+	    </div>
+	  </div>
+
+
+
+
 	<div class='form-group'>
 		<label for='name' class='col-sm-2 control-label'>제품</label>
 		<div class='col-sm-10'>
@@ -54,7 +64,12 @@
 
 	<div class='form-group'>
 		<div class='col-sm-offset-2 col-sm-10'>
-			<button id='btnAdd' type='button' class='btn btn-primary'>등록</button>
+			<button id='btnAdd' type='button' 
+			     class='my-new-form btn btn-primary'>등록</button>
+			<button id='btnUpdate' type='button' 
+			     class='my-update-form btn btn-primary' style='display:none'>변경</button>
+			<button id='btnDelete' type='button' 
+			     class='my-update-form btn btn-primary' style='display:none'>삭제</button>
 			<button id='btnCancel' type='reset' class='btn btn-primary'>취소</button>
 		</div>
 	</div>
@@ -64,6 +79,14 @@
 <script>
   $('#btnCancel').click(function(){
     //history.back();
+    $('.my-update-form').css('display', 'none');
+    $('.my-new-form').css('display', '');
+  });
+  
+  $('#btnDelete').click(function(){
+    //history.back();
+    deleteProduct($('#no').val());
+    
     
   });
   
@@ -123,6 +146,8 @@
           function(data){
              $('#btnCancel').click();
              console.log(data);
+             
+             $('#no').val(data.product.no);
              $('#name').val(data.product.name);
              $('#quantity').val(data.product.quantity);
              $('#makerNo').val(data.product.makerNo);
@@ -133,8 +158,24 @@
                  .slice(0,10)
                  /*.replace(/-/g,"")*/);
              }
+             
+             
+             $('.my-update-form').css('display', '');
+             $('.my-new-form').css('display', 'none');
           });
    }
+ 
+ 
+ function deleteProduct(productNo) {
+   $.getJSON('../json/product/delete.do?no=' + productNo, 
+     function(data){
+     if (data.status == 'success') {
+       loadProductList(0);
+       
+       $('#btnCancel').click();
+     }
+   });
+ }
 </script>
 
 
