@@ -82,23 +82,33 @@
       return;
     }
    
-   $.post( "../json/product/add.do"/* URL */
-       , { /* 서버에 보낼 데이터를 객체에 담아 넘긴다 */
-         name : $('#name').val(),
-         quantity : $('#quantity').val(),
-         makerNo : $('#makerNo').val(),
-         photofile2 : $('#photofile').val()
-       } 
-       ,function(result) { /* 서버로부터 응답을 받았을 때 호출될 메서드 */
-         if (result.status == "success") {
-           alert("등록 성공!");
-         } else {
-           alert("등록 실패!");
-         }
-			     /*  $( ".result" ).html( data ); */
-			 }
-       ,'json' /* 서버가 보낸 데이터를 JSON 형식으로 처리 */);
    
+   //  $.post(URL, 성공함수)
+   //   .fail(실패함수)
+   //   .done(성공함수2)
+   //   .always(마무리함수 항상호출)
+   $.post( "../json/product/add.do"/* URL */
+	       , { /* 서버에 보낼 데이터를 객체에 담아 넘긴다 */
+	         name : $('#name').val(),
+	         quantity : $('#quantity').val(),
+	         makerNo : $('#makerNo').val(),
+	         photofile2 : $('#photofile').val()
+	       } 
+	       ,function(result) { /* 서버로부터 응답을 받았을 때 호출될 메서드 */
+	         if (result.status == "success") {
+	           alert("등록 성공!");
+	         } else {
+	           alert("등록 실패!");
+	         }
+				     /*  $( ".result" ).html( data ); */
+				 }
+	       ,'json' /* 서버가 보낸 데이터를 JSON 형식으로 처리 */)
+	       
+       .fail(function(jqXHR, textStatus, errorThrown){
+         /* 서버 요청이 실패했을 때 호출될 함수 */
+         alert(textStatus + ":" + errorThrown);
+         });
+	   
  });
 </script>
 
