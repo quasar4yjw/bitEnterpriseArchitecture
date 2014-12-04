@@ -223,16 +223,21 @@ public class ProductControl {
 	
 	
 	@RequestMapping("/view")
-	public String view(int no, Model model)
+	public Object view(int no, Model model)
 			throws Exception{
-
 		Product product = productDao.selectOne(no);
-		model.addAttribute("product", product);
+		
+		 HashMap<String,Object> resultMap = new HashMap<>();
+	    resultMap.put("status", "success");
+	    resultMap.put("product", product);
+	    resultMap.put("photos", productDao.selectPhoto(product.getNo()));
+		/*model.addAttribute("product", product);
 		model.addAttribute("photos", 
 				productDao.selectPhoto(product.getNo()));
 		
 		model.addAttribute("makers", makerDao.selectNameList());
-			return "product/ProductView";
+			return "product/ProductView";*/
+	    return resultMap;
 	}
 	
 	

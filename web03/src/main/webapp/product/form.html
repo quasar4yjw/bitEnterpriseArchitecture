@@ -55,7 +55,7 @@
 	<div class='form-group'>
 		<div class='col-sm-offset-2 col-sm-10'>
 			<button id='btnAdd' type='button' class='btn btn-primary'>등록</button>
-			<button id='btnCancel' type='button' class='btn btn-primary'>취소</button>
+			<button id='btnCancel' type='reset' class='btn btn-primary'>취소</button>
 		</div>
 	</div>
 </form>
@@ -63,7 +63,8 @@
 
 <script>
   $('#btnCancel').click(function(){
-    history.back();
+    //history.back();
+    
   });
   
  $('#btnAdd').click(function(){
@@ -92,11 +93,14 @@
 	         name : $('#name').val(),
 	         quantity : $('#quantity').val(),
 	         makerNo : $('#makerNo').val(),
+	         madeDate : $('#madeDate').val(),
 	         photofile2 : $('#photofile').val()
 	       } 
 	       ,function(result) { /* 서버로부터 응답을 받았을 때 호출될 메서드 */
 	         if (result.status == "success") {
 	           alert("등록 성공!");
+	           loadProductList(1);
+	           $('#btnCancel').click(); // click 이벤트 발생시킴.
 	         } else {
 	           alert("등록 실패!");
 	         }
@@ -110,6 +114,27 @@
          });
 	   
  });
+ 
+ 
+ 
+ 
+ function loadProduct(productNo) {
+   $.getJSON('../json/product/view.do?no=' + productNo, 
+          function(data){
+             $('#btnCancel').click();
+             console.log(data);
+             $('#name').val(data.product.name);
+             $('#quantity').val(data.product.quantity);
+             $('#makerNo').val(data.product.makerNo);
+             if (data.product.madeDate){
+             $('#madeDate').val(
+                 new Date(data.product.madeDate)
+                 .toISOString()
+                 .slice(0,10)
+                 /*.replace(/-/g,"")*/);
+             }
+          });
+   }
 </script>
 
 

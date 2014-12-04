@@ -8,6 +8,19 @@ $(function(){
   $('.footer').load('../common/footer.html');
   $('.form').load('form.html');
 	loadProductList(1);
+	
+	 /*$('.data-row a').click(function(){
+	    alert('okokok @_@');
+	  });*/
+	/*$('.data-row a').on(function(){
+  alert('okokok @_@');
+});*/
+	$(document).on('click', '.data-row a', function(){
+	  //alert('okokok @_@');//앞으로 존재할 태그에 대해서도!
+	  //alert($(this).attr('data-no'));
+	  loadProduct($(this).attr('data-no'));
+	});
+	
 });
 
 
@@ -90,6 +103,13 @@ $.getJSON('../json/product/list.do?pageNo=' + pageNo,
 		         .append($('<td>').html(products[i].quantity))
 		         .append($('<td>').html(products[i].maker))
 		         .appendTo('#productTable')
-		    }  
+		    }
+		      
 		  });
 }
+
+
+
+
+
+
