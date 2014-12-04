@@ -38,6 +38,14 @@
 	border-radius : 10px;
 }
 
+.form {
+  /* border: 1px red solid; */
+  background-color: white;
+  padding: 5px;
+  margin: 5px 0px;
+  border-radius : 10px;
+}
+
 .userinfo {
   /* border: 1px red solid; */
   float: left;

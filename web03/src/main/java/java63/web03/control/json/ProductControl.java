@@ -50,13 +50,13 @@ public class ProductControl {
 	//방법 2) @RequestMapping("/product/add.do")
 	//방법 3) @RequestMapping
 	//방법 4) @RequestMapping("/add.do")
-	@RequestMapping(value="/add", method=RequestMethod.GET)
+	/*@RequestMapping(value="/add", method=RequestMethod.GET)
 	public ModelAndView form() throws Exception { // 5~6년전
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("makers", makerDao.selectNameList());
 		mv.setViewName("product/ProductForm");
 		return mv;
-	}
+	}*/
 
 	// Model은 request에 담을 값을 보관할 임시 저장소
 	/*
@@ -78,14 +78,26 @@ public class ProductControl {
 	 *  => 단, MultipartFile인 경우는 선언해야 한다!
 	 */
 	@RequestMapping(value="/add", method=RequestMethod.POST) //DispatcherServlet이 호출
-	public String add(Product product)
+	public Object add(Product product)
 					throws Exception {
-
-		String fileuploadRealPath = servletContext.getRealPath("/fileupload");
-		String filename = System.currentTimeMillis() + "_";
-		File file = new File(fileuploadRealPath + "/" + filename);
-		product.getPhotofile().transferTo(file);
-    product.setPhoto(filename);
+	  
+	  
+	  productDao.insert(product);
+	  
+	  
+	  if (product.getPhotofile() != null && !product.getPhotofile().isEmpty()) { 
+	    //멀티파트 데이터 넘어와야한다.
+	    // 0바이트가 아니어야 한다.
+	    
+  	  String fileuploadRealPath = servletContext.getRealPath("/fileupload");
+  		String filename = System.currentTimeMillis() + "_";
+  		File file = new File(fileuploadRealPath + "/" + filename);
+  		product.getPhotofile().transferTo(file); // 널 객체에 대해서 메서드 호출 불가! 널포인트익셉션
+  		product.setPhoto(filename);
+		
+	    productDao.insertPhoto(product);
+		
+	  }
 
 
 		/*Product product = new Product();
@@ -95,9 +107,18 @@ public class ProductControl {
 		product.setPhoto(filename);*/
 		//product.setPhoto(paramMap.get("photo"));
 
-		productDao.insert(product);
+	  
+	  
+	/*	productDao.insert(product); // 위로 이동
+		if (!product.getPhotofile().isEmpty()){
 		productDao.insertPhoto(product);
-		return "redirect:list.do";
+		}*/
+		
+		HashMap<String,Object> resultMap = new HashMap<>();
+		resultMap.put("status", "success");
+		
+		//return "redirect:list.do";
+		return resultMap;
 	}
 	
 	
