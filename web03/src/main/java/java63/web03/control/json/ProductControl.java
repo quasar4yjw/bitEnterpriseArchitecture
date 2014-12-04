@@ -205,7 +205,7 @@ public class ProductControl {
 	
 	
 	@RequestMapping("/update")
-	public String update(Product product)
+	public Object update(Product product)
 			throws Exception {
 
 /*		Product product = new Product();
@@ -216,7 +216,10 @@ public class ProductControl {
 		
 		productDao.update(product);
 
-		return "redirect:list.do";
+		HashMap<String,Object> resultMap = new HashMap<>();
+    resultMap.put("status", "success");
+    return resultMap;
+		//return "redirect:list.do";
 	}
 	
 	

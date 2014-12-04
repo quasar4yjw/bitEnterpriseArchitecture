@@ -16,7 +16,7 @@ $(function(){
   alert('okokok @_@');
 });*/
 	$(document).on('click', '.data-row a', function(){
-	  //alert('okokok @_@');//앞으로 존재할 태그에 대해서도!
+	  //alert('okokok @_@');//두번째 파라미터로 주면 앞으로 존재할 태그에 대해서도!
 	  //alert($(this).attr('data-no'));
 	  loadProduct($(this).attr('data-no'));
 	});

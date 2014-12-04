@@ -77,10 +77,14 @@
 
 
 <script>
+  var product;
+
+
   $('#btnCancel').click(function(){
     //history.back();
     $('.my-update-form').css('display', 'none');
     $('.my-new-form').css('display', '');
+    product = null;
   });
   
   $('#btnDelete').click(function(){
@@ -90,22 +94,26 @@
     
   });
   
+  $('#btnUpdate').click(function(){
+    //history.back();
+    alert('1.0');
+    console.log(product.madeDate);
+    console.log($('#madeDate').val());
+    if (product.name == $('#name').val() &&
+        product.quantity == $('#quantity').val() &&
+        product.makerNo == $('#makerNo').val() &&
+        yyyyMMdd(product.madeDate) == $('#madeDate').val()) {
+        alert("바꾼거없자나");
+        return;
+    }
+    if (!validateForm()) return;
+    updateProduct($('#no').val());
+    
+    
+  });
+  
  $('#btnAdd').click(function(){
-   if ( $('#name').val().length == 0) {
-    alert('제품명은 필수 입력 항목입니다.');
-    return;
-   }
-   
-   if ( $('#quantity').val().length == 0) {
-      alert('수량은 필수 입력 항목입니다.');
-      return;
-    }
-   
-   if ( $('#makerNo').val() == '0') {
-      alert('제조사를 선택하세요');
-      return;
-    }
-   
+   if (!validateForm()) return;
    
    //  $.post(URL, 성공함수)
    //   .fail(실패함수)
@@ -144,6 +152,7 @@
  function loadProduct(productNo) {
    $.getJSON('../json/product/view.do?no=' + productNo, 
           function(data){
+             
              $('#btnCancel').click();
              console.log(data);
              
@@ -153,12 +162,11 @@
              $('#makerNo').val(data.product.makerNo);
              if (data.product.madeDate){
              $('#madeDate').val(
-                 new Date(data.product.madeDate)
-                 .toISOString()
-                 .slice(0,10)
+                 yyyyMMdd(data.product.madeDate)              
                  /*.replace(/-/g,"")*/);
              }
              
+             product = data.product; //서버에 값변경없이 불필요하게 업데이트되는 걸 막기위해
              
              $('.my-update-form').css('display', '');
              $('.my-new-form').css('display', 'none');
@@ -175,6 +183,30 @@
        $('#btnCancel').click();
      }
    });
+ }
+ 
+ function validateForm() {
+		if ( $('#name').val().length == 0) {
+		  alert('제품명은 필수 입력 항목입니다.');
+		  return false;
+		 }
+		
+		if ( $('#quantity').val().length == 0) {
+		   alert('수량은 필수 입력 항목입니다.');
+		   return false;
+		 }
+		
+		if ( $('#makerNo').val() == '0') {
+		   alert('제조사를 선택하세요');
+		   return false;
+		 }
+		
+	  return true;
+ }
+ 
+ function yyyyMMdd(date) {
+   if (date) return new Date(date).toISOString().slice(0,10);
+   else return "";
  }
 </script>
 
