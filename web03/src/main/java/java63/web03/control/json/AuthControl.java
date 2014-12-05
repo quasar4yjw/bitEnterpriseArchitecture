@@ -1,9 +1,8 @@
 package java63.web03.control.json;
 
 import java.util.HashMap;
-
-import java63.web03.dao.MemberDao;
 import java63.web03.domain.Member;
+import java63.web03.service.MemberService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +31,7 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes({"loginUser", "requestUrl"})
 public class AuthControl {
 
-	@Autowired MemberDao memberDao;
+	@Autowired MemberService memberService;
 
 	
 	/*@CookieValue
@@ -93,10 +92,10 @@ public class AuthControl {
 
 			/*request.setAttribute("cookieList", cookieList);*/
 			
-			HashMap<String,String> params = new HashMap<>();
+			/*HashMap<String,String> params = new HashMap<>();
 			params.put("userId", uid);
-			params.put("password", pwd);
-			Member member = memberDao.existUser(params);
+			params.put("password", pwd);*/
+			Member member = memberService.validate(uid, pwd);
 			
 			/*HttpSession session = request.getSession();*/
 			if (member != null) {

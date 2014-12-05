@@ -2,27 +2,20 @@ package java63.web03.control.json;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-
-import java63.web03.dao.MakerDao;
-import java63.web03.dao.ProductDao;
 import java63.web03.domain.Product;
+import java63.web03.service.MakerService;
+import java63.web03.service.ProductService;
 
 import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 /* @RequestMapping
  * => 메서드에 URL을 연결한다.
@@ -42,8 +35,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProductControl {
 	static Logger log = Logger.getLogger(ProductControl.class);
 	static final int PAGE_DEFAULT_SIZE = 5;
-	@Autowired MakerDao makerDao;
-	@Autowired ProductDao productDao;
+	@Autowired MakerService      makerService;
+	@Autowired ProductService    productService;
 	@Autowired ServletContext servletContext;
 
 	//방법 1) @RequestMapping
@@ -82,7 +75,7 @@ public class ProductControl {
 					throws Exception {
 	  
 	  
-	  productDao.insert(product);
+	  //productDao.insert(product);
 	  
 	  
 	  if (product.getPhotofile() != null && !product.getPhotofile().isEmpty()) { 
@@ -95,10 +88,12 @@ public class ProductControl {
   		product.getPhotofile().transferTo(file); // 널 객체에 대해서 메서드 호출 불가! 널포인트익셉션
   		product.setPhoto(filename);
 		
-	    productDao.insertPhoto(product);
+	    //productDao.insertPhoto(product);
 		
 	  }
 
+	  
+	  productService.add(product);
 
 		/*Product product = new Product();
 		product.setName(name);
@@ -125,8 +120,9 @@ public class ProductControl {
 	@RequestMapping("/delete")
 	public Object delete(@RequestParam int no)
 			throws Exception {
-		productDao.deletePhoto(no);
-		productDao.delete(no);
+	  productService.delete(no);
+		/*productDao.deletePhoto(no);
+		productDao.delete(no);*/
 		
 		//해당 제품의 사진 경로를 알아내서
 		//파일 시스템에서 지운다.
@@ -162,23 +158,26 @@ public class ProductControl {
 			if (pageSize <= 0)
 				pageSize = PAGE_DEFAULT_SIZE;
 			
-			int totalSize = productDao.totalSize();
+			/*int totalSize = productDao.totalSize();
 			int maxPageNo = totalSize / pageSize;
-			if ((totalSize % pageSize) > 0 ) maxPageNo++;
+			if ((totalSize % pageSize) > 0 ) maxPageNo++;*/
 
+			int maxPageNo = productService.getMaxPageNo(pageSize);
+			
+			
 			if (pageNo <= 0)	pageNo = 1;
 	    if (pageNo > maxPageNo) pageNo = maxPageNo;
 			
-			HashMap<String,Object> paramMap = new HashMap<>();
+			/*HashMap<String,Object> paramMap = new HashMap<>();
 	    paramMap.put("startIndex", ((pageNo - 1) * pageSize));
-	    paramMap.put("pageSize", pageSize);
+	    paramMap.put("pageSize", pageSize);*/
 	    
 	    HashMap<String,Object> resultMap = new HashMap<>();
 			//List<Product> products = productDao.selectList(pageNo, pageSize);
 	    resultMap.put("status","success");
 	    resultMap.put("currPageNo", pageNo);
 	    resultMap.put("maxPageNo", maxPageNo);
-	    resultMap.put("products", productDao.selectList(paramMap));
+	    resultMap.put("products", productService.getList(pageNo, pageSize));
 
 	    return resultMap;
 			/*if (pageNo > 1) {
@@ -214,7 +213,7 @@ public class ProductControl {
 		product.setQuantity(Integer.parseInt(request.getParameter("qty")));
 		product.setMakerNo(Integer.parseInt(request.getParameter("mkno")));*/
 		
-		productDao.update(product);
+		productService.update(product);
 
 		HashMap<String,Object> resultMap = new HashMap<>();
     resultMap.put("status", "success");
@@ -230,12 +229,12 @@ public class ProductControl {
 	@RequestMapping("/view")
 	public Object view(int no, Model model)
 			throws Exception{
-		Product product = productDao.selectOne(no);
+		Product product = productService.get(no);
 		
 		 HashMap<String,Object> resultMap = new HashMap<>();
 	    resultMap.put("status", "success");
 	    resultMap.put("product", product);
-	    resultMap.put("photos", productDao.selectPhoto(product.getNo()));
+	    resultMap.put("photos", product.getPhotoList());
 		/*model.addAttribute("product", product);
 		model.addAttribute("photos", 
 				productDao.selectPhoto(product.getNo()));
