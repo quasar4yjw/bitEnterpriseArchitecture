@@ -38,6 +38,9 @@ public class ProductService {
   
   /* @Transactional 선언하는 의미
      => 메서드 안의 입력/변경/삭제(manipulation*) 작업을    *API 문서에서 만남
+     Data Manipulation Language : DML (데이터의 수정하는 작업)
+     DQL (셀렉트 작업)
+     DDL (테이블 뷰 프로시저등을 정의하는 작업)
      하나의 작업으로 묶는다.
      => 모든 작업이 성공했을 때만 서버에 반영한다.
      
