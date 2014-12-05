@@ -3,9 +3,11 @@ package java63.web03.control;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+
 import java63.web03.dao.MakerDao;
 import java63.web03.dao.ProductDao;
 import java63.web03.domain.Product;
+import java63.web03.service.MakerService;
 import java63.web03.service.ProductService;
 
 import javax.servlet.ServletContext;
@@ -39,9 +41,9 @@ public class ProductControl {
 	static final int PAGE_DEFAULT_SIZE = 5;
 	
 	@Autowired ProductService      productService;
-	
-	@Autowired MakerDao makerDao;
-	@Autowired ProductDao productDao;
+	@Autowired MakerService        makerService;
+	//@Autowired MakerDao makerDao;
+	//@Autowired ProductDao productDao;
 	@Autowired ServletContext servletContext;
 
 	//방법 1) @RequestMapping
@@ -51,7 +53,7 @@ public class ProductControl {
 	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public ModelAndView form() throws Exception { // 5~6년전
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("makers", makerDao.selectNameList());
+		mv.addObject("makers", makerService.getList());
 		mv.setViewName("product/ProductForm");
 		return mv;
 	}
@@ -92,7 +94,9 @@ public class ProductControl {
 		product.setMakerNo(mkno);
 		product.setPhoto(filename);*/
 		//product.setPhoto(paramMap.get("photo"));
-
+    
+    productService.add(product);
+    
 		return "redirect:list.do";
 	}
 	
@@ -100,8 +104,8 @@ public class ProductControl {
 	@RequestMapping("/delete")
 	public String delete(@RequestParam int no)
 			throws Exception {
-		productDao.deletePhoto(no);
-		productDao.delete(no);
+		
+		productService.delete(no);
 		
 		//해당 제품의 사진 경로를 알아내서
 		//파일 시스템에서 지운다.
@@ -185,7 +189,7 @@ public class ProductControl {
 		product.setQuantity(Integer.parseInt(request.getParameter("qty")));
 		product.setMakerNo(Integer.parseInt(request.getParameter("mkno")));*/
 		
-		productDao.update(product);
+		productService.update(product);
 
 		return "redirect:list.do";
 	}
@@ -199,12 +203,12 @@ public class ProductControl {
 	public String view(int no, Model model)
 			throws Exception{
 
-		Product product = productDao.selectOne(no);
+		Product product = productService.get(no);
 		model.addAttribute("product", product);
-		model.addAttribute("photos", 
-				productDao.selectPhoto(product.getNo()));
+		model.addAttribute("photos", product.getPhotoList()
+				/*productDao.selectPhoto(product.getNo())*/);
 		
-		model.addAttribute("makers", makerDao.selectNameList());
+		model.addAttribute("makers", makerService.getList());
 			return "product/ProductView";
 	}
 	
