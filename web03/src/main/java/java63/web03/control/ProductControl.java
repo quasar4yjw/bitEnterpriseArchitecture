@@ -2,23 +2,18 @@ package java63.web03.control;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-
 import java63.web03.dao.MakerDao;
 import java63.web03.dao.ProductDao;
 import java63.web03.domain.Product;
+import java63.web03.service.ProductService;
 
 import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +37,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProductControl {
 	static Logger log = Logger.getLogger(ProductControl.class);
 	static final int PAGE_DEFAULT_SIZE = 5;
+	
+	@Autowired ProductService      productService;
+	
 	@Autowired MakerDao makerDao;
 	@Autowired ProductDao productDao;
 	@Autowired ServletContext servletContext;
@@ -95,8 +93,6 @@ public class ProductControl {
 		product.setPhoto(filename);*/
 		//product.setPhoto(paramMap.get("photo"));
 
-		productDao.insert(product);
-		productDao.insertPhoto(product);
 		return "redirect:list.do";
 	}
 	
@@ -140,19 +136,18 @@ public class ProductControl {
 			if (pageSize <= 0)
 				pageSize = PAGE_DEFAULT_SIZE;
 			
-			int totalSize = productDao.totalSize();
-			int maxPageNo = totalSize / pageSize;
-			if ((totalSize % pageSize) > 0 ) maxPageNo++;
+			int maxPageNo = productService.getMaxPageNo(pageSize);
 
 			if (pageNo <= 0)	pageNo = 1;
 	    if (pageNo > maxPageNo) pageNo = maxPageNo;
 			
-			HashMap<String,Object> paramMap = new HashMap<>();
+			/*HashMap<String,Object> paramMap = new HashMap<>();
 	    paramMap.put("startIndex", ((pageNo - 1) * pageSize));
-	    paramMap.put("pageSize", pageSize);
+	    paramMap.put("pageSize", pageSize);*/
 	    
 			//List<Product> products = productDao.selectList(pageNo, pageSize);
-			model.addAttribute("products", productDao.selectList(paramMap));
+			model.addAttribute("products", 
+			    productService.getList(pageNo, pageSize));
 			
 			model.addAttribute("currPageNo", pageNo);
 			
