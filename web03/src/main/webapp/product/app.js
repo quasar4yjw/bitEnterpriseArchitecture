@@ -21,6 +21,13 @@ $(function(){
 	  loadProduct($(this).attr('data-no'));
 	});
 	
+	$(document).on('click', '.my-delete-btn', function(){
+    //alert('okokok @_@');//두번째 파라미터로 주면 앞으로 존재할 태그에 대해서도!
+    //alert($(this).attr('data-no'));
+	  deleteProduct($(this).attr('data-no'))
+    loadProduct(0);
+  });
+	
 });
 
 
@@ -91,21 +98,11 @@ function loadProductList(pageNo) {
 		   /*  var prevPageNo = currPageNo - 1;
 		    if(data.prevPageNo) */
 		    
-		     $('.data-row').remove();
-		      for (var i = 0; i < products.length; i++) {
-		        $('<tr>').addClass('data-row')
-		     //console.log(data.products[i]);
-		      
-		         .append($('<td>').html(products[i].no))
-		         .append(
-		        		 $('<td>').append(
-		        				 $('<a>').attr('href', '#')
-		        				         .attr('data-no', products[i].no)
-		        				         .html(products[i].name)))
-		         .append($('<td>').html(products[i].quantity))
-		         .append($('<td>').html(products[i].maker))
-		         .appendTo('#productTable')
-		    }
+		       require(['text!templates/product-table.html'], function(html){
+		         var template = Handlebars.compile(html);
+	           $('#listDiv').html( template(data) );
+		       });
+		       //xml-http-ajax 내부적으로 사용
 		      
 		  });
 }

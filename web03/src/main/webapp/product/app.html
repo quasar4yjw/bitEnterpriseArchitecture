@@ -13,20 +13,8 @@
 
 <div class='content'>
 <h1>제품 목록(by JSP v2.0)</h1>
+<div id='listDiv'></div>
 <!-- <p><a href='add.do' class='btn btn-primary'>새제품</a></p> -->
-<table id='productTable' class='table table-hover'>
-<tr>
-  <th>#</th><th>제품</th><th>수량</th><th>제조사</th>
-</tr>
-
-<!-- <tr>
-<td>1</td>
-<td><a href='view.do?no=1'>아이폰6</a></td>
-<td>100</td>
-<td>애플</td>
-</tr> -->
-
-</table>
 
 <div id='pagingBar'>
  <!-- <a href='list.do?pageNo=2' class='btn btn-default'>다음</a> -->
@@ -46,8 +34,9 @@
 <div class='footer'></div>
 
 </div>
-
- <script src='../js/jquery-1.11.1.js'></script>
+<script type="text/javascript" src='../js/jquery-1.11.1.js'></script>
+<script type="text/javascript" src='../js/handlebars-v2.0.0.js'></script>
+<script type="text/javascript" src='../js/require.js'></script>
  <script src='app.js'></script>
 </body>
 </html>
