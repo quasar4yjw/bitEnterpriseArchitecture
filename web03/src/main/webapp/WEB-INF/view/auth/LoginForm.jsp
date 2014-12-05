@@ -51,5 +51,3 @@
 	<jsp:include page="/common/Footer.jsp" />
 </body>
 </html>
-</body>
-</html>
